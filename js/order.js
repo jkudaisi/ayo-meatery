@@ -64,8 +64,9 @@ function validate(){const d=new Date(st.day);if(!st.day||d.getDay()===0)return'C
  if(!(st.name||'').trim())return'Add your name so the kitchen knows whose order it is.';
  const p=(st.phone||'').replace(/\D/g,'');if(!(p.length===10||(p.length===11&&p[0]==='1')))return'Add a 10-digit phone number.';return'';}
 let ticket=null;
+const fmtPhone=p=>{let d=(p||'').replace(/\D/g,'');if(d.length===11&&d[0]==='1')d=d.slice(1);return d.length===10?`(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`:(p||'').trim();};
 const shortOpts=o=>o.map(x=>x.replace(' serve','').replace('Assorted meat (tripe, cow skin, beef)','Assorted meat').replace('White rice (single serve)','White rice single').replace('White rice (double serve)','White rice double'));
-function summary(){const L=[`Pickup order ${ticket?'#'+ticket+' ':''}for Ayomee's Kitchen`,`Name: ${st.name.trim()}`,`Phone: ${st.phone.trim()}`,`Pickup: ${fmtD(new Date(st.day))}, ${fmtT(+st.time)}`,''];
+function summary(){const L=[`Pickup order ${ticket?'#'+ticket+' ':''}for Ayomee's Kitchen`,`Name: ${st.name.trim()}`,`Phone: ${fmtPhone(st.phone)}`,`Pickup: ${fmtD(new Date(st.day))}, ${fmtT(+st.time)}`,''];
  st.items.forEach(x=>{const o=shortOpts(x.opts);L.push(`${x.qty}x ${x.name}${o.length?' ('+o.join(', ')+')':''} ${money(x.unit*x.qty)}`);});
  L.push(`Total (est.): ${money(sub())}`);if((st.notes||'').trim())L.push(`Notes: ${st.notes.trim().slice(0,200)}`);return L.join('\n');}
 // encodeURIComponent, then un-escape RFC 3986 query-safe chars to keep the QR small
@@ -80,7 +81,7 @@ function renderQR(uri){let q;for(const ec of['M','L']){try{q=qrcode(0,ec);q.addD
  box.innerHTML=`<svg viewBox="0 0 ${tot} ${tot}" shape-rendering="crispEdges" width="100%" height="100%"><rect width="${tot}" height="${tot}" fill="#fff"/><path d="${d}" fill="#120d0a"/></svg>`;box.dataset.modules=n;const k=Math.max(3,Math.min(5,Math.ceil(236/tot))),px=tot*k;box.style.width=box.style.height=px+'px';box.parentElement.style.width=box.parentElement.style.height=(px+16)+'px';}
 function setMode(){const t=touch();co.classList.toggle('is-touch',t&&!showQR);$('#qrToggle').hidden=!t;$('#qrToggle').textContent=showQR?'Hide QR code':'Show QR code instead';}
 function checkout(){if(!ticket)ticket=nextTicket();const text=summary(),uri=smsUri(text);
- $('#tkNo').textContent='#'+ticket;$('#tkName').textContent=st.name.trim();
+ $('#tkNo').textContent='#'+ticket;$('#tkName').textContent=st.name.trim()+' · '+fmtPhone(st.phone);
  $('#tkLines').innerHTML=st.items.map(x=>`<li><span class="q">${x.qty}</span><span class="n">${x.name}${x.opts.length?`<small>${shortOpts(x.opts).join(' · ')}</small>`:''}</span><span class="p">${money(x.unit*x.qty)}</span></li>`).join('');
  $('#tkTotal').textContent=money(sub());const when=`${fmtD(new Date(st.day))} at ${fmtT(+st.time)}`;$('#tkReady').textContent=`Ready ${when}. Pick up at the kitchen.`;
  $('#tkNotes').textContent=(st.notes||'').trim()?'Note: '+st.notes.trim():'';

@@ -56,11 +56,7 @@
    <label>Phone<input id="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(555) 555-5555"></label>
    <label>Notes <small>(optional)</small><textarea id="notes" rows="2" placeholder="Allergies, spice, special requests"></textarea></label>
    <p class="err" id="err" role="alert"></p></form>
-  <div class="step s3" hidden><p class="handoff-lead">This concept site doesn't take payment or send orders. Send your order to Ayomee's Kitchen one of these ways:</p>
-   <a class="hand" id="hSms" href="#"><b>Text this order</b><span>Opens Messages with your order filled in, to (561) 612-9876</span></a>
-   <a class="hand" href="tel:+15616129876"><b>Call Ayomee's Kitchen</b><span>(561) 612-9876</span></a>
-   <a class="hand" href="https://www.ayomeatery.com/online-ordering" target="_blank" rel="noopener"><b>Order on Ayomee's official site</b><span>ayomeatery.com/online-ordering</span></a>
-   <pre class="summary" id="summary"></pre><button class="btn ghost sm" id="copy" type="button">Copy summary</button></div>
+  
  </div>
  <div class="dr-foot"><div class="tot"><span>Subtotal</span><b id="sub">$0</b></div><p class="tiny">Estimate from listed prices. Ayomee's Kitchen confirms the final total.</p>
   <div class="dr-actions"><button class="btn ghost" id="back" hidden>Back</button><button class="btn" id="next">Choose pick-up time</button></div></div>
@@ -68,10 +64,44 @@
 <dialog class="opt" id="opt"><form method="dialog" id="optForm"><div class="opt-img"><img alt=""></div><div class="opt-body"><h3></h3><p class="opt-d"></p><div class="groups"></div>
  <div class="qty"><button type="button" data-q="-1" aria-label="Less">−</button><output>1</output><button type="button" data-q="1" aria-label="More">+</button></div></div>
  <div class="opt-foot"><button type="button" class="btn ghost" value="cancel" data-cancel>Cancel</button><button class="btn" id="optAdd" value="add">Add · <span></span></button></div></form></dialog>
+<dialog class="checkout" id="checkout" aria-labelledby="coTitle">
+ <button class="x co-x" type="button" data-co-close aria-label="Close">×</button>
+ <div class="co-grid">
+  <div class="ticket-wrap"><article class="ticket" id="ticket">
+   <header class="tk-head"><img src="img/logo.png" alt="" width="46" height="46"><div><b>Ayomee’s Kitchen</b><small>ayomeatery.com · (561) 612-9876</small></div><div class="tk-no"><small>Ticket</small><span id="tkNo">#000</span></div></header>
+   <p class="tk-for">For: <b id="tkName"></b></p>
+   <ul class="tk-lines" id="tkLines"></ul>
+   <div class="tk-total"><span>Total <small>(est.)</small></span><b id="tkTotal"></b></div>
+   <p class="tk-ready" id="tkReady"></p><p class="tk-notes" id="tkNotes"></p>
+   <p class="tk-foot">Pick-up only · Pay at pick-up</p>
+   <div class="tk-stamp" aria-hidden="true">Sent</div>
+  </article></div>
+  <div class="co-right">
+   <div class="co-send">
+    <p class="eyebrow">Almost done</p>
+    <h3 id="coTitle" class="co-h"><span class="only-desk">Scan to send it from your phone</span><span class="only-touch">Text it to the kitchen</span></h3>
+    <div class="co-mid">
+     <div class="qr-box"><div class="qr" id="qr" role="img" aria-label="QR code that opens a text message with your order"></div></div>
+     <a class="btn big-sms" id="smsBtn" href="#"><span>Text this order</span></a>
+     <ol class="co-steps"><li><i>1</i><span class="only-desk">Open your phone camera and point it at the code</span><span class="only-touch">Tap “Text this order”</span></li><li><i>2</i><span>Your order is already typed out in Messages</span></li><li><i>3</i><span>Hit send and the kitchen starts on it</span></li></ol>
+    </div>
+    <button class="btn link-btn" type="button" id="qrToggle"></button>
+    <div class="co-actions"><button class="btn" type="button" id="sentIt"><span>I sent it</span></button></div>
+    <p class="co-alt"><button type="button" class="ul" id="coCopy">Copy the order</button> or call it in at <a href="tel:+15616129876">(561) 612-9876</a> · <a href="https://www.ayomeatery.com/online-ordering" target="_blank" rel="noopener">Order on Ayomee’s official site</a></p>
+   </div>
+   <div class="co-done" hidden>
+    <p class="eyebrow">Order sent</p><h3 class="co-h">Got it. Ayomee’s Kitchen will confirm by text.</h3>
+    <p class="co-done-p">Your ticket <b id="doneNo"></b> is ready for <b id="doneWhen"></b>. Didn’t send? Call <a href="tel:+15616129876">(561) 612-9876</a>.</p>
+    <button class="btn" type="button" data-co-close><span>Back to the menu</span></button>
+   </div>
+  </div>
+ </div>
+ <p class="co-legal">No payment is taken on this site. Ayomee’s Kitchen confirms your order and total.</p>
+</dialog>
 <div class="toast" id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-<script src="js/menu.js"></script><script src="js/order.js"></script><script src="js/main.js"></script><script type="module" src="js/hero.js"></script>
+<script src="js/vendor/qrcode.js"></script><script src="js/menu.js"></script><script src="js/order.js"></script><script src="js/main.js"></script><script type="module" src="js/hero.js"></script>
 </body></html>

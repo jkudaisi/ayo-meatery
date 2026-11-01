@@ -83,3 +83,8 @@ if(!RM){
   '(max-width:860px)':()=>{$$('.card').forEach(c=>gsap.from(c,{y:60,opacity:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:c,start:'top 90%'}}));}});
 }
 addEventListener('load',()=>ScrollTrigger.refresh());
+
+// v5: solid header on scroll + tabs offset under header
+(()=>{const nav=document.querySelector('.nav');const set=()=>{document.documentElement.style.setProperty('--navh',nav.offsetHeight+'px');};
+ const onS=()=>nav.classList.toggle('scrolled',(window.scrollY||0)>40);addEventListener('scroll',onS,{passive:true});if(window.lenis)lenis.on('scroll',onS);
+ addEventListener('resize',set);set();onS();document.fonts&&document.fonts.ready.then(set);})();

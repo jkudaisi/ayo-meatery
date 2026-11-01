@@ -59,11 +59,11 @@ function buildDays(){const ds=days(),box=$('#days');if(!ds.some(d=>d.toDateStrin
  ['name','phone','notes'].forEach(k=>{const el=$('#'+k);el.value=st[k]||'';el.oninput=()=>{st[k]=el.value;save();};});}
 function buildTimes(){const sel=$('#time'),sl=slotsFor(new Date(st.day));sel.innerHTML='<option value="">Choose a time</option>'+sl.map(m=>`<option value="${m}" ${String(m)===String(st.time)?'selected':''}>${fmtT(m)}</option>`).join('');
  if(!sl.includes(+st.time))st.time='';sel.onchange=()=>{st.time=sel.value;save();};}
-function validate(){const d=new Date(st.day);if(!st.day||d.getDay()===0)return'Choose a pick-up day. Ayo is closed Sundays.';
+function validate(){const d=new Date(st.day);if(!st.day||d.getDay()===0)return'Choose a pick-up day. Ayomee’s Kitchen is closed Sundays.';
  if(!st.time||!slotsFor(d).includes(+st.time))return'Choose a pick-up time between 12:15 PM and 7:45 PM.';
- if(!(st.name||'').trim())return'Add your name so Ayo knows whose order it is.';
+ if(!(st.name||'').trim())return'Add your name so the kitchen knows whose order it is.';
  const p=(st.phone||'').replace(/\D/g,'');if(!(p.length===10||(p.length===11&&p[0]==='1')))return'Add a 10-digit phone number.';return'';}
-function summary(){const L=['Pick-up order for Ayo Meatery',`Name: ${st.name.trim()}`,`Phone: ${st.phone.trim()}`,`Pick-up: ${fmtD(new Date(st.day))}, ${fmtT(+st.time)}`,''];
+function summary(){const L=['Pick-up order for Ayomee’s Kitchen',`Name: ${st.name.trim()}`,`Phone: ${st.phone.trim()}`,`Pick-up: ${fmtD(new Date(st.day))}, ${fmtT(+st.time)}`,''];
  st.items.forEach(x=>L.push(`${x.qty} x ${x.name}${x.opts.length?' ('+x.opts.join(', ')+')':''}: ${money(x.unit*x.qty)}`));
  L.push('',`Subtotal (est.): ${money(sub())}`);if((st.notes||'').trim())L.push(`Notes: ${st.notes.trim()}`);return L.join('\n');}
 function buildSummary(){const s=summary();$('#summary').textContent=s;$('#hSms').href=`sms:${PHONE}?&body=${encodeURIComponent(s)}`;}
